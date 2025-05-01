@@ -18,9 +18,9 @@ Office.onReady((info) => {
 
 function setAllDayVacation() {
   const item = Office.context.mailbox.item;
-
   if (!item) {
     console.error("予定アイテムが取得できません");
+    showMessage("予定アイテムが取得できませんでした。");
     return;
   }
 
@@ -28,31 +28,29 @@ function setAllDayVacation() {
 
   // 件名を設定
   item.subject.setAsync("終日休暇", (subjectResult) => {
-    if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
-      console.log("件名が設定されました。");
-
-      // isAllDayEvent がサポートされていれば自動設定
-      if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
-        item.isAllDayEvent.setAsync(true, (allDayResult) => {
-          if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
-            console.log("終日イベントが設定されました。");
-          } else {
-            console.error("終日設定に失敗:", allDayResult.error.message);
-          }
-        });
-      } else {
-        // サポートされていない場合は通知表示（新しいOutlookなど）
-        Office.context.mailbox.item.notificationMessages.replaceAsync("manualAllDayNotice", {
-          type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
-          message: "新しいOutlookでは「終日」を手動でオンにしてください。",
-          icon: "Icon.16x16",
-          persistent: true
-        });
-        console.warn("isAllDayEvent.setAsync はサポートされていません。手動で設定してください。");
-      }
-
-    } else {
+    if (subjectResult.status !== Office.AsyncResultStatus.Succeeded) {
       console.error("件名の設定に失敗:", subjectResult.error.message);
+      showMessage("件名の設定に失敗しました。");
+      return;
+    }
+
+    console.log("件名が設定されました");
+
+    // isAllDayEvent が利用可能か確認
+    if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
+      item.isAllDayEvent.setAsync(true, (allDayResult) => {
+        if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
+          console.log("終日イベントが設定されました");
+          showMessage("『終日休暇』を設定しました。");
+        } else {
+          console.error("終日イベントの設定に失敗:", allDayResult.error.message);
+          showMessage("件名は設定されましたが、終日設定に失敗しました。");
+        }
+      });
+    } else {
+      // New Outlook など isAllDayEvent 未対応の場合
+      console.warn("isAllDayEvent が未対応のため、手動対応を促します。");
+      showMessage("件名を『終日休暇』に設定しました。終日のチェックは手動で ON にしてください。");
     }
   });
 }
@@ -117,4 +115,17 @@ function setPMVacation() {
       });
     });
   });
+}
+
+function showMessage(text, duration = 5000) {
+  const messageDiv = document.getElementById("message");
+  if (!messageDiv) return;
+
+  messageDiv.textContent = text;
+  messageDiv.style.display = "block";
+
+  setTimeout(() => {
+    messageDiv.textContent = "";
+    messageDiv.style.display = "none";
+  }, duration);
 }

@@ -28,6 +28,13 @@
         text-align: center;
         margin-bottom: 20px;
       }
+
+      #message {
+        margin-top: 10px;
+        color: red;
+        font-weight: bold;
+        text-align: center;
+      }
     </style>
   </head>
 
@@ -40,7 +47,11 @@
       <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</button>
       <button id="amHalfDayButton" class="ms-Button ms-Button--primary">AM半休</button>
       <button id="pmHalfDayButton" class="ms-Button ms-Button--primary">PM半休</button>
+
+      <!-- ユーザー向け通知用 -->
+      <div id="message"></div>
     </div>
+
     <script src="taskpane.js"></script>
   </body>
 </html>
