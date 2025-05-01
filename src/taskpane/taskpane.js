@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/01 15:51");
+console.log("taskpane.js ロード: 2025/05/01 16:01");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
@@ -54,6 +54,14 @@ function setAMVacation() {
     console.error("予定アイテムが取得できません");
     return;
   }
+
+  const start = new Date();
+  start.setHours(9, 0, 0, 0);
+  console.log("設定する開始時刻: ", start.toISOString());
+
+  const end = new Date();
+  end.setHours(13, 0, 0, 0);
+  console.log("設定する終了時刻: ", end.toISOString());
 
   console.log("AM半休設定開始");
 
