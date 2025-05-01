@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/01 16:36");
+console.log("taskpane.js ロード: 2025/05/01 16:47");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
@@ -18,6 +18,7 @@ Office.onReady((info) => {
 
 function setAllDayVacation() {
   const item = Office.context.mailbox.item;
+  console.log("isAllDayEvent:", item.isAllDayEvent);
 
   if (!item) {
     console.error("予定アイテムが取得できません");
