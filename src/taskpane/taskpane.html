@@ -1,54 +1,22 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
-
 <!DOCTYPE html>
 <html lang="ja">
-
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>休暇予定入力アドイン</title>
 
-        <!-- Office JavaScript API -->
         <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-
-        <!-- Template styles -->
-        <link href="taskpane.css" rel="stylesheet" type="text/css" />
-
-        <style>
-            body {
-                padding: 20px;
-                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            }
-    
-            #app-body {
-                display: flex;
-                flex-direction: column;  /* 縦方向に並べる */
-                gap: 10px;  /* ボタン間のスペース */
-            }
-    
-            .ms-Button {
-                width: 100%;
-            }
-    
-            h1 {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-        </style>
-
     </head>
 
-    <body class="ms-font-m ms-welcome ms-Fabric">
-        <div id="app-body">
-            <h1>Task Pane Buttons</h1>
-            <button id="button1" class="ms-Button ms-Button--primary">Button 1</button>
-            <button id="button2" class="ms-Button ms-Button--primary">Button 2</button>
-            <button id="button3" class="ms-Button ms-Button--primary">Button 3</button>
-        </div>
-    
-        <script src="taskpane.js"></script>
-    </body>
+    <body>
+        <h1>タスクペインが表示されているか確認</h1>
+        <button>ボタン1</button>
+        <button>ボタン2</button>
+        <button>ボタン3</button>
 
+        <script>
+            console.log("タスクペインが表示されました");
+        </script>
+    </body>
 </html>
