@@ -3,7 +3,7 @@ const allDayButton = document.getElementById("allDayButton");
 const amHalfDayButton = document.getElementById("amHalfDayButton");
 const pmHalfDayButton = document.getElementById("pmHalfDayButton");
 
-console.log("taskpane.js loaded: 2025-05-01 16:40");
+console.log("taskpane.js loaded: 2025-05-01 14:57");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
@@ -41,25 +41,34 @@ function setAllDayVacation() {
 // AM半休の設定
 function setAMVacation() {
   const item = Office.context.mailbox.item;
-  item.subject.setAsync("AM半休", () => {
-    if (item.isAllDayEvent) {
-      item.isAllDayEvent.setAsync(false);
-    }
+  item.subject.setAsync("AM半休", (subjectResult) => {
+    if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
+      item.isAllDayEvent.setAsync(false, (allDayResult) => {
+        if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
+          const start = new Date();
+          start.setHours(9, 0, 0, 0);
+          const end = new Date();
+          end.setHours(13, 0, 0, 0);
 
-    const start = new Date();
-    start.setHours(9, 0, 0, 0);
-    const end = new Date();
-    end.setHours(13, 0, 0, 0);
-
-    if (item.start && item.end && item.start.setAsync && item.end.setAsync) {
-      item.start.setAsync(start, (startResult) => {
-        console.log("start set result:", startResult.status);
-        item.end.setAsync(end, (endResult) => {
-          console.log("end set result:", endResult.status);
-        });
+          item.start.setAsync(start, (startResult) => {
+            if (startResult.status === Office.AsyncResultStatus.Succeeded) {
+              item.end.setAsync(end, (endResult) => {
+                if (endResult.status === Office.AsyncResultStatus.Succeeded) {
+                  console.log("AM半休の時間が設定されました。");
+                } else {
+                  console.error("終了時刻の設定に失敗:", endResult.error.message);
+                }
+              });
+            } else {
+              console.error("開始時刻の設定に失敗:", startResult.error.message);
+            }
+          });
+        } else {
+          console.error("終日設定の解除に失敗:", allDayResult.error.message);
+        }
       });
     } else {
-      console.warn("start/end setAsync がサポートされていない環境です。");
+      console.error("件名の設定に失敗:", subjectResult.error.message);
     }
   });
 }
@@ -67,18 +76,34 @@ function setAMVacation() {
 // PM半休の設定
 function setPMVacation() {
   const item = Office.context.mailbox.item;
-  item.subject.setAsync("PM半休", () => {
-    item.isAllDayEvent.setAsync(false, () => {
-      const start = new Date();
-      start.setHours(14, 0, 0, 0);
-      const end = new Date();
-      end.setHours(18, 15, 0, 0);
+  item.subject.setAsync("PM半休", (subjectResult) => {
+    if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
+      item.isAllDayEvent.setAsync(false, (allDayResult) => {
+        if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
+          const start = new Date();
+          start.setHours(14, 0, 0, 0);
+          const end = new Date();
+          end.setHours(18, 15, 0, 0);
 
-      item.start.setAsync(start, () => {
-        item.end.setAsync(end, () => {
-          console.log("PM半休の時間が設定されました。");
-        });
+          item.start.setAsync(start, (startResult) => {
+            if (startResult.status === Office.AsyncResultStatus.Succeeded) {
+              item.end.setAsync(end, (endResult) => {
+                if (endResult.status === Office.AsyncResultStatus.Succeeded) {
+                  console.log("PM半休の時間が設定されました。");
+                } else {
+                  console.error("終了時刻の設定に失敗:", endResult.error.message);
+                }
+              });
+            } else {
+              console.error("開始時刻の設定に失敗:", startResult.error.message);
+            }
+          });
+        } else {
+          console.error("終日設定の解除に失敗:", allDayResult.error.message);
+        }
       });
-    });
+    } else {
+      console.error("件名の設定に失敗:", subjectResult.error.message);
+    }
   });
 }
