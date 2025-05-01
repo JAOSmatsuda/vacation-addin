@@ -5,10 +5,9 @@ const pmHalfDayButton = document.getElementById("pmHalfDayButton");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
-    // ボタンのクリックイベントを設定
-    allDayButton.onclick = setAllDayVacation;
-    amHalfDayButton.onclick = setAMHalfDay;
-    pmHalfDayButton.onclick = setPMHalfDay;
+    document.getElementById("allDayButton").onclick = setAllDayVacation;
+    document.getElementById("amHalfDayButton").onclick = setAMVacation;
+    document.getElementById("pmHalfDayButton").onclick = setPMVacation;
   }
 });
 
