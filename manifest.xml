@@ -75,8 +75,8 @@
         <bt:Image id="Icon.80x80" DefaultValue="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Commands.Url" DefaultValue="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/src/commands/commands.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/src/taskpane/taskpane.html"/>
+        <bt:Url id="Commands.Url" DefaultValue="https://jaosmatsuda.github.io/vacation-addin/src/commands/commands.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://jaosmatsuda.github.io/vacation-addin/src/taskpane/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="休暇予定入力"/>
