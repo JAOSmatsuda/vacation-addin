@@ -1,7 +1,15 @@
-console.log("taskpane.js ロード: 2025/05/01 15:30");
+console.log("taskpane.js ロード: 2025/05/01 15:51");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
+    console.log("📦 Mailbox API バージョンチェック開始");
+
+    if (Office.context.requirements.isSetSupported("Mailbox", "1.7")) {
+      console.log("✅ Mailbox 1.7 はサポートされています！");
+    } else {
+      console.warn("⚠️ Mailbox 1.7 はサポートされていません。");
+    }
+
     document.getElementById("allDayButton").onclick = setAllDayVacation;
     document.getElementById("amHalfDayButton").onclick = setAMVacation;
     document.getElementById("pmHalfDayButton").onclick = setPMVacation;
