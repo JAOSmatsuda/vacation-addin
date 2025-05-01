@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/01 17:06");
+console.log("taskpane.js ロード: 2025/05/01 17:17");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
@@ -27,8 +27,26 @@ function setAllDayVacation() {
 
   console.log("終日休暇設定開始");
 
-  item.subject.setAsync("終日休暇");
-  item.isAllDayEvent.setAsync(true);
+  item.subject.setAsync("終日休暇", (subjectResult) => {
+    if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
+      console.log("件名が設定されました");
+
+      if (item.isAllDayEvent && item.isAllDayEvent.setAsync) {
+        item.isAllDayEvent.setAsync(true, (allDayResult) => {
+          if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
+            console.log("終日イベントが設定されました");
+          } else {
+            console.error("終日設定に失敗:", allDayResult.error.message);
+          }
+        });
+      } else {
+        console.warn("isAllDayEvent はサポートされていません");
+      }
+
+    } else {
+      console.error("件名の設定に失敗:", subjectResult.error.message);
+    }
+  });
 }
 
 function setAMVacation() {
