@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>休暇予定入力アドイン</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>休暇予定入力アドイン</title>
 
-        <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-    </head>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <style>
+      body {
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
 
-    <body>
-        <h1>タスクペインが表示されているか確認</h1>
-        <button>ボタン1</button>
-        <button>ボタン2</button>
-        <button>ボタン3</button>
+      #app-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-        <script>
-            console.log("タスクペインが表示されました");
-        </script>
-    </body>
+      .ms-Button {
+        width: 100%;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body class="ms-font-m ms-welcome ms-Fabric">
+    <div id="app-body">
+      <h1>休暇予定入力</h1>
+      <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</button>
+      <button id="amHalfDayButton" class="ms-Button ms-Button--primary">AM半休</button>
+      <button id="pmHalfDayButton" class="ms-Button ms-Button--primary">PM半休</button>
+    </div>
+    <script src="taskpane.js"></script>
+  </body>
 </html>
