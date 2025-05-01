@@ -1,29 +1,35 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+ * See LICENSE in the project root for license information.
+ */
+
 /* global Office */
 
 Office.onReady(() => {
-  // Office.jsが読み込み完了
+  // If needed, Office.js is ready to be called.
 });
 
 /**
- * 件名を「終日休暇」に設定し、終日フラグをONにする
- * @param {Office.AddinCommands.Event} event
+ * Shows a notification when the add-in command is executed.
+ * @param event {Office.AddinCommands.Event}
  */
-function setVacationEvent(event) {
-  const item = Office.context.mailbox.item;
+function action(event) {
+  const message = {
+    type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
+    message: "Performed action.",
+    icon: "Icon.80x80",
+    persistent: true,
+  };
 
-  item.subject.setAsync("終日休暇", (subjectResult) => {
-    if (subjectResult.status !== Office.AsyncResultStatus.Succeeded) {
-      console.error("件名設定失敗:", subjectResult.error.message);
-    }
-  });
+  // Show a notification message.
+  Office.context.mailbox.item.notificationMessages.replaceAsync(
+    "ActionPerformanceNotification",
+    message
+  );
 
-  item.isAllDayEvent.setAsync(true, (allDayResult) => {
-    if (allDayResult.status !== Office.AsyncResultStatus.Succeeded) {
-      console.error("終日設定失敗:", allDayResult.error.message);
-    }
-  });
-
+  // Be sure to indicate when the add-in command function is complete.
   event.completed();
 }
 
-Office.actions.associate("setVacationEvent", setVacationEvent);
+// Register the function with Office.
+Office.actions.associate("action", action);
