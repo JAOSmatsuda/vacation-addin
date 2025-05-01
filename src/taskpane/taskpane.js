@@ -38,21 +38,39 @@ function setAllDayVacation() {
 }
 
 // AM半休の設定
-function setAMHalfDay() {
+function setAMVacation() {
   const item = Office.context.mailbox.item;
   item.subject.setAsync("AM半休", () => {
-    item.isAllDayEvent.setAsync(false); // 終日イベントをオフ
-    item.start.setAsync(new Date(item.start.date.getFullYear(), item.start.date.getMonth(), item.start.date.getDate(), 9, 0)); // 開始時刻をAM9:00に設定
-    item.end.setAsync(new Date(item.start.date.getFullYear(), item.start.date.getMonth(), item.start.date.getDate(), 12, 0)); // 終了時刻をPM12:00に設定
+    item.isAllDayEvent.setAsync(false, () => {
+      const start = new Date();
+      start.setHours(9, 0, 0, 0);
+      const end = new Date();
+      end.setHours(13, 0, 0, 0);
+
+      item.start.setAsync(start, () => {
+        item.end.setAsync(end, () => {
+          console.log("AM半休の時間が設定されました。");
+        });
+      });
+    });
   });
 }
 
 // PM半休の設定
-function setPMHalfDay() {
+function setPMVacation() {
   const item = Office.context.mailbox.item;
   item.subject.setAsync("PM半休", () => {
-    item.isAllDayEvent.setAsync(false); // 終日イベントをオフ
-    item.start.setAsync(new Date(item.start.date.getFullYear(), item.start.date.getMonth(), item.start.date.getDate(), 14, 0)); // 開始時刻をPM2:00に設定
-    item.end.setAsync(new Date(item.start.date.getFullYear(), item.start.date.getMonth(), item.start.date.getDate(), 18, 15)); // 終了時刻をPM6:15に設定
+    item.isAllDayEvent.setAsync(false, () => {
+      const start = new Date();
+      start.setHours(14, 0, 0, 0);
+      const end = new Date();
+      end.setHours(18, 15, 0, 0);
+
+      item.start.setAsync(start, () => {
+        item.end.setAsync(end, () => {
+          console.log("PM半休の時間が設定されました。");
+        });
+      });
+    });
   });
 }
