@@ -40,18 +40,25 @@ function setAllDayVacation() {
 function setAMVacation() {
   const item = Office.context.mailbox.item;
   item.subject.setAsync("AM半休", () => {
-    item.isAllDayEvent.setAsync(false, () => {
-      const start = new Date();
-      start.setHours(9, 0, 0, 0);
-      const end = new Date();
-      end.setHours(13, 0, 0, 0);
+    if (item.isAllDayEvent) {
+      item.isAllDayEvent.setAsync(false);
+    }
 
-      item.start.setAsync(start, () => {
-        item.end.setAsync(end, () => {
-          console.log("AM半休の時間が設定されました。");
+    const start = new Date();
+    start.setHours(9, 0, 0, 0);
+    const end = new Date();
+    end.setHours(13, 0, 0, 0);
+
+    if (item.start && item.end && item.start.setAsync && item.end.setAsync) {
+      item.start.setAsync(start, (startResult) => {
+        console.log("start set result:", startResult.status);
+        item.end.setAsync(end, (endResult) => {
+          console.log("end set result:", endResult.status);
         });
       });
-    });
+    } else {
+      console.warn("start/end setAsync がサポートされていない環境です。");
+    }
   });
 }
 
