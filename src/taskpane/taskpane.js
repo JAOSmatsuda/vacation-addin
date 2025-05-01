@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/01 17:44");
+console.log("taskpane.js ロード: 2025/05/01 18:15");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
