@@ -3,6 +3,8 @@ const allDayButton = document.getElementById("allDayButton");
 const amHalfDayButton = document.getElementById("amHalfDayButton");
 const pmHalfDayButton = document.getElementById("pmHalfDayButton");
 
+console.log("taskpane.js loaded: 2025-05-01 16:40");
+
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
     document.getElementById("allDayButton").onclick = setAllDayVacation;
