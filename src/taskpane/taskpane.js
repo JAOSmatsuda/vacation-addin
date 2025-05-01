@@ -12,11 +12,26 @@ Office.onReady((info) => {
   }
 });
 
-// 終日休暇の設定
 function setAllDayVacation() {
   const item = Office.context.mailbox.item;
-  item.subject.setAsync("終日休暇", () => {
-    item.isAllDayEvent.setAsync(true); // 終日イベントに設定
+
+  // 件名を「終日休暇」に設定
+  item.subject.setAsync("終日休暇", (subjectResult) => {
+    if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
+      console.log("件名が設定されました。");
+
+      // 終日イベントをONに設定
+      item.isAllDayEvent.setAsync(true, (allDayResult) => {
+        if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
+          console.log("終日イベントが設定されました。");
+        } else {
+          console.error("終日設定に失敗:", allDayResult.error.message);
+        }
+      });
+
+    } else {
+      console.error("件名の設定に失敗:", subjectResult.error.message);
+    }
   });
 }
 
