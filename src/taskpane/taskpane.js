@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/01 17:17");
+console.log("taskpane.js ロード: 2025/05/01 17:44");
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
@@ -18,7 +18,6 @@ Office.onReady((info) => {
 
 function setAllDayVacation() {
   const item = Office.context.mailbox.item;
-  console.log("isAllDayEvent:", item.isAllDayEvent);
 
   if (!item) {
     console.error("予定アイテムが取得できません");
@@ -27,20 +26,29 @@ function setAllDayVacation() {
 
   console.log("終日休暇設定開始");
 
+  // 件名を設定
   item.subject.setAsync("終日休暇", (subjectResult) => {
     if (subjectResult.status === Office.AsyncResultStatus.Succeeded) {
-      console.log("件名が設定されました");
+      console.log("件名が設定されました。");
 
-      if (item.isAllDayEvent && item.isAllDayEvent.setAsync) {
+      // isAllDayEvent がサポートされていれば自動設定
+      if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
         item.isAllDayEvent.setAsync(true, (allDayResult) => {
           if (allDayResult.status === Office.AsyncResultStatus.Succeeded) {
-            console.log("終日イベントが設定されました");
+            console.log("終日イベントが設定されました。");
           } else {
             console.error("終日設定に失敗:", allDayResult.error.message);
           }
         });
       } else {
-        console.warn("isAllDayEvent はサポートされていません");
+        // サポートされていない場合は通知表示（新しいOutlookなど）
+        Office.context.mailbox.item.notificationMessages.replaceAsync("manualAllDayNotice", {
+          type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
+          message: "新しいOutlookでは「終日」を手動でオンにしてください。",
+          icon: "Icon.16x16",
+          persistent: true
+        });
+        console.warn("isAllDayEvent.setAsync はサポートされていません。手動で設定してください。");
       }
 
     } else {
@@ -48,6 +56,7 @@ function setAllDayVacation() {
     }
   });
 }
+
 
 function setAMVacation() {
   const item = Office.context.mailbox.item;
