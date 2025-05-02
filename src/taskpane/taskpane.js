@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 17:50";
+const scriptVersion = "2025/05/02 17:58";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -151,6 +151,18 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
       }
     });
   });
+}
+
+function flashWarning() {
+  const warning = document.getElementById('manual-warning');
+  if (!warning) return;
+
+  const originalColor = warning.style.color;
+  warning.style.color = 'red';
+
+  setTimeout(() => {
+    warning.style.color = originalColor;
+  }, 300);
 }
 
 Office.onReady(() => {

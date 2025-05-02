@@ -153,21 +153,6 @@
           document.getElementById('new-gif').style.display = 'inline-block';
         }
       }
-
-      function flashWarning() {
-        const warning = document.getElementById("manual-warning");
-        if (!warning) return;
-
-        let flashes = 0;
-        const interval = setInterval(() => {
-          warning.style.color = (flashes % 2 === 0) ? "red" : "";
-          flashes++;
-          if (flashes >= 6) {
-            clearInterval(interval);
-            warning.style.color = "";
-          }
-        }, 167); // 約3倍速（1回0.167秒）
-      }
     </script>
 
     <script type="module" src="taskpane.js"></script>
