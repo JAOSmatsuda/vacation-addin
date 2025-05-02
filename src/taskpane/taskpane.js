@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 17:58";
+const scriptVersion = "2025/05/02 18:03";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -154,7 +154,7 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
 }
 
 function flashWarning() {
-  const warning = document.getElementById('manual-warning');
+  const warning = document.getElementById('oof-warning');
   if (!warning) return;
 
   const originalColor = warning.style.color;
@@ -162,7 +162,7 @@ function flashWarning() {
 
   setTimeout(() => {
     warning.style.color = originalColor;
-  }, 300);
+  }, 150);
 }
 
 Office.onReady(() => {
