@@ -87,19 +87,54 @@
 
       <div id="message"></div>
 
-      <div id="oof-guide">
-        <div class="gif-pair">
-          <div class="gif-box">
-            <p>New Outlookでの操作方法</p>
-            <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" alt="New Outlook操作方法">
+      <div id="oof-guide" style="text-align: center; margin-top: 20px;">
+        <p style="font-weight: bold;">手動で公開方法を変更してください</p>
+        <div style="display: flex; justify-content: center; gap: 20px;">
+          
+          <!-- Classic Outlook -->
+          <div>
+            <p><strong>Outlook Classic</strong></p>
+            <div style="position: relative; display: inline-block;">
+              <img id="classic-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic_1frame.png" 
+                   alt="Classic Preview" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+              <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
+                   alt="Play" onclick="playGif('classic')" 
+                   style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; cursor: pointer;">
+              <img id="classic-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" 
+                   style="display: none; max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+            </div>
           </div>
-          <div class="gif-box">
-            <p>Classic Outlookでの操作方法</p>
-            <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" alt="Classic Outlook操作方法">
+      
+          <!-- New Outlook -->
+          <div>
+            <p><strong>Outlook New</strong></p>
+            <div style="position: relative; display: inline-block;">
+              <img id="new-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_1frame.png" 
+                   alt="New Preview" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+              <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
+                   alt="Play" onclick="playGif('new')" 
+                   style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; cursor: pointer;">
+              <img id="new-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" 
+                   style="display: none; max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+            </div>
           </div>
+      
         </div>
-      </div>
-    </div>
+      </div>      
+
+    <script>
+      function playGif(type) {
+        if (type === 'classic') {
+          document.getElementById('classic-static').style.display = 'none';
+          document.querySelector('#classic-static + img').style.display = 'none'; // play button
+          document.getElementById('classic-gif').style.display = 'inline-block';
+        } else if (type === 'new') {
+          document.getElementById('new-static').style.display = 'none';
+          document.querySelector('#new-static + img').style.display = 'none'; // play button
+          document.getElementById('new-gif').style.display = 'inline-block';
+        }
+      }
+    </script>
 
     <script type="module" src="taskpane.js"></script>
   </body>
