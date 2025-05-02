@@ -74,8 +74,9 @@
       }
 
       .oof-media {
-        max-width: 250px;
+        max-width: 100%;
         width: 100%;
+        height: auto;
         border: 1px solid #ccc;
         border-radius: 8px;
       }
@@ -100,33 +101,29 @@
         <div style="display: flex; justify-content: center; gap: 20px;">
           
           <!-- Classic Outlook -->
-          <div>
+          <div style="flex: 1; text-align: center;">
             <p><strong>Outlook Classic</strong></p>
-            <div style="display: inline-block; width: 50%; vertical-align: top; text-align: center;">
-              <div style="position: relative; display: inline-block; transform: scale(0.5); transform-origin: top left;">
-                <img id="classic-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic_1frame.png" 
-                     alt="Classic Preview" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
-                <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
-                     alt="Play" onclick="playGif('classic')" 
-                     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(2); width: 40px; height: 40px; cursor: pointer;">
-                <img id="classic-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" 
-                     style="display: none; max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
-              </div>
-            </div>           
+            <div style="position: relative; display: inline-block; width: 100%;">
+              <img id="classic-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic_1frame.png" 
+                  alt="Classic Preview" class="oof-media">
+              <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
+                  alt="Play" onclick="playGif('classic')" 
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; cursor: pointer;">
+              <img id="classic-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" 
+                  style="display: none;" class="oof-media">
+            </div>
           </div>
           <!-- New Outlook -->
-          <div>
+          <div style="flex: 1; text-align: center;">
             <p><strong>Outlook New</strong></p>
-            <div style="display: inline-block; width: 50%; vertical-align: top; text-align: center;">
-              <div style="position: relative; display: inline-block; transform: scale(0.8); transform-origin: top left;">
-                <img id="new-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_1frame.png" 
-                     alt="New Preview" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
-                <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
-                     alt="Play" onclick="playGif('new')" 
-                     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.25); width: 40px; height: 40px; cursor: pointer;">
-                <img id="new-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" 
-                     style="display: none; max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
-              </div>
+            <div style="position: relative; display: inline-block; width: 100%;">
+              <img id="new-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_1frame.png" 
+                  alt="New Preview" class="oof-media">
+              <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
+                  alt="Play" onclick="playGif('new')" 
+                  style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; cursor: pointer;">
+              <img id="new-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" 
+                  style="display: none;" class="oof-media">
             </div>
           </div>
       
