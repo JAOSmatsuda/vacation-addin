@@ -24,9 +24,18 @@
         width: 100%;
       }
 
-      h1 {
+      #title {
+        font-size: 1.1em;
+        font-weight: bold;
         text-align: center;
-        margin-bottom: 5px;
+        margin: 0;
+        padding: 0;
+      }
+
+      #version {
+        margin: 0;
+        text-align: center;
+        font-size: 0.9em;
       }
 
       #message {
@@ -40,22 +49,19 @@
 
   <body class="ms-font-m ms-welcome ms-Fabric">
     <div id="app-body">
-      <h1>休暇予定入力</h1>
-
+      <div id="title">休暇予定入力</div>
       <p id="version"></p>
 
-      <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</buttonS>
+      <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</button>
       <button id="amHalfDayButton" class="ms-Button ms-Button--primary">AM半休</button>
       <button id="pmHalfDayButton" class="ms-Button ms-Button--primary">PM半休</button>
 
       <!-- ユーザー向け通知用 -->
       <div id="message"></div>
-      
 
-      
       <div id="oof-guide" style="text-align: center; margin-top: 20px;">
         <p style="font-weight: bold;">
-          Outlook (new) の場合は、公開方法を手動で「不在」にしてください。
+          Outlook (new) の場合は、<br>公開方法を手動で「不在」にしてください。
         </p>
         <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" 
              alt="外出中の設定方法" 
