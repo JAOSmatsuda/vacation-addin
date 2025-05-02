@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 11:46";
+const scriptVersion = "2025/05/02 11:57";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -19,6 +19,15 @@ function showMessage(message, isError = false) {
     messageDiv.style.display = "none";
   }, 5000);
 }
+
+const OfficeBusyStatus = {
+  Free: 0,
+  Tentative: 1,
+  Busy: 2,
+  OOF: 3,
+  WorkingElsewhere: 4,
+  NoData: 5
+};
 
 function fallbackAllDaySet(item) {
   const start = new Date();
@@ -48,18 +57,14 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
-  // 公開方法を「外出中」に設定（列挙型を使用）
   if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
-    const status = Office.MailboxEnums && Office.MailboxEnums.BusyStatus
-      ? Office.MailboxEnums.BusyStatus.OOF
-      : "oof";
-
-    item.busyStatus.setAsync(status, (result) => {
+    item.busyStatus.setAsync(OfficeBusyStatus.OOF, (result) => {
       if (result.status !== Office.AsyncResultStatus.Succeeded) {
         console.error("公開方法の設定に失敗:", result.error.message);
         showMessage("公開方法の設定に失敗しました", true);
       } else {
-        console.log("公開方法が不在に設定されました");
+        console.log("公開方法が外出中に設定されました");
+        showMessage("公開方法を「外出中」に設定しました");
       }
     });
   }
@@ -103,16 +108,13 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
   });
 
   if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
-    const status = Office.MailboxEnums && Office.MailboxEnums.BusyStatus
-      ? Office.MailboxEnums.BusyStatus.OOF
-      : "oof";
-
-    item.busyStatus.setAsync(status, (result) => {
+    item.busyStatus.setAsync(OfficeBusyStatus.OOF, (result) => {
       if (result.status !== Office.AsyncResultStatus.Succeeded) {
         console.error("公開方法の設定に失敗:", result.error.message);
         showMessage("公開方法の設定に失敗しました", true);
       } else {
-        console.log("公開方法が不在に設定されました");
+        console.log("公開方法が外出中に設定されました");
+        showMessage("公開方法を「外出中」に設定しました");
       }
     });
   }
