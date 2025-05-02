@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/02 09:21");
+console.log("taskpane.js ロード: 2025/05/02 09:27");
 
 function showMessage(message, isError = false) {
   const messageDiv = document.getElementById("message");
@@ -52,24 +52,38 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
-  if (Office.context.requirements.isSetSupported("Mailbox", "1.7") &&
-      item.isAllDayEvent &&
-      typeof item.isAllDayEvent.setAsync === "function") {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  const end = new Date();
+  end.setHours(23, 59, 0, 0);
 
-    item.isAllDayEvent.setAsync(true, (result) => {
-      if (result.status === Office.AsyncResultStatus.Succeeded) {
-        console.log("Classic: 終日設定成功");
-        showMessage("終日に設定されました");
+  let startSet = false;
+  let endSet = false;
+
+  item.start.setAsync(start, (startResult) => {
+    if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
+      console.error("開始時刻設定エラー:", startResult.error.message);
+    } else {
+      console.log("開始時刻が設定されました");
+      startSet = true;
+    }
+
+    item.end.setAsync(end, (endResult) => {
+      if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
+        console.error("終了時刻設定エラー:", endResult.error.message);
       } else {
-        console.warn("Classic: isAllDayEvent 設定失敗、fallback へ");
-        fallbackAllDaySet(item);
+        console.log("終了時刻が設定されました");
+        endSet = true;
+      }
+
+      // 通知は必ず出す
+      if (startSet && endSet) {
+        showMessage("終日（00:00〜23:59）に設定しました");
+      } else {
+        showMessage("終日の時間設定に一部失敗しました", true);
       }
     });
-
-  } else {
-    console.log("New Outlook: isAllDayEvent 非対応。fallback 使用");
-    fallbackAllDaySet(item);
-  }
+  });
 }
 
 function setHalfDay(startHour, endHour, subjectText) {
