@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 11:07";
+const scriptVersion = "2025/05/02 11:19";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -26,21 +26,9 @@ function fallbackAllDaySet(item) {
   const end = new Date(start);
   end.setDate(start.getDate() + 1);
 
-  item.start.setAsync(start, (startResult) => {
-    if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
-      console.error("開始時刻設定エラー:", startResult.error.message);
-      showMessage("開始時刻の設定に失敗しました", true);
-      return;
-    }
-
-    item.end.setAsync(end, (endResult) => {
-      if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
-        console.error("終了時刻設定エラー:", endResult.error.message);
-        showMessage("終了時刻の設定に失敗しました", true);
-      } else {
-        console.log("New: 終日風スケジュール設定成功");
-        showMessage("終日に設定されました");
-      }
+  item.start.setAsync(start, () => {
+    item.end.setAsync(end, () => {
+      showMessage("終日に設定されました");
     });
   });
 }
@@ -60,14 +48,16 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
-  // ここで busyStatus に直接 3 (OOF) を指定
-  item.busyStatus.setAsync(3, (result) => {
-    if (result.status !== Office.AsyncResultStatus.Succeeded) {
-      console.error("公開方法の設定に失敗:", result.error.message);
-    } else {
-      console.log("公開方法が不在に設定されました");
-    }
-  });
+  // 公開方法を「外出中」に設定
+  if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
+    item.busyStatus.setAsync("oof", (result) => {
+      if (result.status !== Office.AsyncResultStatus.Succeeded) {
+        console.error("公開方法の設定に失敗:", result.error.message);
+      } else {
+        console.log("公開方法が不在に設定されました");
+      }
+    });
+  }
 
   if (isClassic && item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
     item.isAllDayEvent.setAsync(true, (result) => {
@@ -85,30 +75,9 @@ function setAllDayVacation() {
     const end = new Date();
     end.setHours(23, 59, 0, 0);
 
-    let startSet = false;
-    let endSet = false;
-
-    item.start.setAsync(start, (startResult) => {
-      if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
-        console.error("開始時刻設定エラー:", startResult.error.message);
-      } else {
-        console.log("New: 開始時刻が設定されました");
-        startSet = true;
-      }
-
-      item.end.setAsync(end, (endResult) => {
-        if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
-          console.error("終了時刻設定エラー:", endResult.error.message);
-        } else {
-          console.log("New: 終了時刻が設定されました");
-          endSet = true;
-        }
-
-        if (startSet && endSet) {
-          showMessage("終日に設定されました");
-        } else {
-          showMessage("終日の時間設定に一部失敗しました", true);
-        }
+    item.start.setAsync(start, () => {
+      item.end.setAsync(end, () => {
+        showMessage("終日に設定されました");
       });
     });
   }
@@ -128,13 +97,15 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
     console.log("件名が設定されました");
   });
 
-  item.busyStatus.setAsync(3, (result) => {
-    if (result.status !== Office.AsyncResultStatus.Succeeded) {
-      console.error("公開方法の設定に失敗:", result.error.message);
-    } else {
-      console.log("公開方法が不在に設定されました");
-    }
-  });
+  if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
+    item.busyStatus.setAsync("oof", (result) => {
+      if (result.status !== Office.AsyncResultStatus.Succeeded) {
+        console.error("公開方法の設定に失敗:", result.error.message);
+      } else {
+        console.log("公開方法が不在に設定されました");
+      }
+    });
+  }
 
   if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
     item.isAllDayEvent.setAsync(false, (result) => {
