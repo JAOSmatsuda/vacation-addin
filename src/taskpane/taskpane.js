@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 18:03";
+const scriptVersion = "2025/05/02 18:09";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -154,15 +154,18 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
 }
 
 function flashWarning() {
-  const warning = document.getElementById('oof-warning');
-  if (!warning) return;
+  const element = document.getElementById("oof-warning");
+  if (!element) return;
 
-  const originalColor = warning.style.color;
-  warning.style.color = 'red';
-
-  setTimeout(() => {
-    warning.style.color = originalColor;
-  }, 150);
+  let flashes = 0;
+  const interval = setInterval(() => {
+    element.classList.toggle("flash-red");
+    flashes++;
+    if (flashes >= 6) { // 3回点滅（ON/OFFで1セット）
+      clearInterval(interval);
+      element.classList.remove("flash-red"); // 最後は戻す
+    }
+  }, 150); // 点滅のスピード
 }
 
 Office.onReady(() => {
