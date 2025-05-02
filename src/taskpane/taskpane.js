@@ -1,4 +1,4 @@
-console.log("taskpane.js ロード: 2025/05/02 09:10");
+console.log("taskpane.js ロード: 2025/05/02 09:21");
 
 function showMessage(message, isError = false) {
   const messageDiv = document.getElementById("message");
@@ -11,6 +11,31 @@ function showMessage(message, isError = false) {
   setTimeout(() => {
     messageDiv.style.display = "none";
   }, 5000);
+}
+
+function fallbackAllDaySet(item) {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 1);
+
+  item.start.setAsync(start, (startResult) => {
+    if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
+      console.error("開始時刻設定エラー:", startResult.error.message);
+      showMessage("開始時刻の設定に失敗しました", true);
+      return;
+    }
+
+    item.end.setAsync(end, (endResult) => {
+      if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
+        console.error("終了時刻設定エラー:", endResult.error.message);
+        showMessage("終了時刻の設定に失敗しました", true);
+      } else {
+        console.log("New: 終日風スケジュール設定成功");
+        showMessage("終日に設定されました");
+      }
+    });
+  });
 }
 
 function setAllDayVacation() {
@@ -27,19 +52,23 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
-  if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
+  if (Office.context.requirements.isSetSupported("Mailbox", "1.7") &&
+      item.isAllDayEvent &&
+      typeof item.isAllDayEvent.setAsync === "function") {
+
     item.isAllDayEvent.setAsync(true, (result) => {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
-        console.log("終日設定が成功しました");
+        console.log("Classic: 終日設定成功");
         showMessage("終日に設定されました");
       } else {
-        console.error("終日設定に失敗:", result.error.message);
-        showMessage("終日設定に失敗しました", true);
+        console.warn("Classic: isAllDayEvent 設定失敗、fallback へ");
+        fallbackAllDaySet(item);
       }
     });
+
   } else {
-    console.warn("isAllDayEvent はサポートされていません。手動で設定してください。");
-    showMessage("終日設定はお使いの Outlook では手動で行ってください", true);
+    console.log("New Outlook: isAllDayEvent 非対応。fallback 使用");
+    fallbackAllDaySet(item);
   }
 }
 
