@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 10:42";
+const scriptVersion = "2025/05/02 10:49";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -20,7 +20,20 @@ function showMessage(message, isError = false) {
   }, 5000);
 }
 
-function setAllDayVacation() {
+// Promise化ユーティリティ
+function setAsyncWrapper(method, value) {
+  return new Promise((resolve, reject) => {
+    method.setAsync(value, (result) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        resolve();
+      } else {
+        reject(result.error.message);
+      }
+    });
+  });
+}
+
+async function setAllDayVacation() {
   const item = Office.context.mailbox.item;
   const isClassic = Office.context.mailbox.diagnostics.hostName === "Outlook";
   console.log("終日休暇設定開始");
@@ -31,55 +44,35 @@ function setAllDayVacation() {
     return;
   }
 
-  item.subject.setAsync("終日休暇", () => {
+  try {
+    await setAsyncWrapper(item.subject, "終日休暇");
     console.log("件名が設定されました");
 
-    item.busyStatus.setAsync(Office.MailboxEnums.BusyStatus.OOF, (busyResult) => {
-      if (busyResult.status !== Office.AsyncResultStatus.Succeeded) {
-        console.error("公開方法の設定に失敗:", busyResult.error.message);
-      } else {
-        console.log("公開方法が不在に設定されました");
-      }
+    await setAsyncWrapper(item.busyStatus, Office.MailboxEnums.BusyStatus.OOF);
+    console.log("公開方法が不在に設定されました");
 
-      if (isClassic && item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
-        item.isAllDayEvent.setAsync(true, (result) => {
-          if (result.status === Office.AsyncResultStatus.Succeeded) {
-            console.log("Classic: 終日設定が成功しました");
-            showMessage("終日に設定されました");
-          } else {
-            console.error("Classic: 終日設定に失敗:", result.error.message);
-            showMessage("終日設定に失敗しました", true);
-          }
-        });
-      } else {
-        const start = new Date();
-        start.setHours(0, 0, 0, 0);
-        const end = new Date();
-        end.setHours(23, 59, 0, 0);
+    if (isClassic && item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
+      await setAsyncWrapper(item.isAllDayEvent, true);
+      console.log("Classic: 終日設定が成功しました");
+    } else {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      const end = new Date();
+      end.setHours(23, 59, 0, 0);
 
-        item.start.setAsync(start, (startResult) => {
-          if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
-            console.error("開始時刻設定エラー:", startResult.error.message);
-            showMessage("開始時刻の設定に失敗しました", true);
-            return;
-          }
+      await setAsyncWrapper(item.start, start);
+      await setAsyncWrapper(item.end, end);
+      console.log("New: 終日風スケジュール設定成功");
+    }
 
-          item.end.setAsync(end, (endResult) => {
-            if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
-              console.error("終了時刻設定エラー:", endResult.error.message);
-              showMessage("終了時刻の設定に失敗しました", true);
-            } else {
-              console.log("New: 終日風スケジュール設定成功");
-              showMessage("終日に設定されました");
-            }
-          });
-        });
-      }
-    });
-  });
+    showMessage("終日に設定されました");
+  } catch (error) {
+    console.error("終日休暇設定エラー:", error);
+    showMessage("終日設定に失敗しました", true);
+  }
 }
 
-function setHalfDay(startHour, endHour, endMinute, subjectText) {
+async function setHalfDay(startHour, endHour, endMinute, subjectText) {
   const item = Office.context.mailbox.item;
   console.log(`${subjectText}設定開始`);
 
@@ -89,50 +82,32 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
     return;
   }
 
-  item.subject.setAsync(subjectText, () => {
+  try {
+    await setAsyncWrapper(item.subject, subjectText);
     console.log("件名が設定されました");
 
-    item.busyStatus.setAsync(Office.MailboxEnums.BusyStatus.OOF, (busyResult) => {
-      if (busyResult.status !== Office.AsyncResultStatus.Succeeded) {
-        console.error("公開方法の設定に失敗:", busyResult.error.message);
-      } else {
-        console.log("公開方法が不在に設定されました");
-      }
+    await setAsyncWrapper(item.busyStatus, Office.MailboxEnums.BusyStatus.OOF);
+    console.log("公開方法が不在に設定されました");
 
-      if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
-        item.isAllDayEvent.setAsync(false, (result) => {
-          if (result.status === Office.AsyncResultStatus.Succeeded) {
-            console.log("終日解除成功");
-          } else {
-            console.error("終日解除に失敗:", result.error.message);
-          }
-        });
-      }
+    if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
+      await setAsyncWrapper(item.isAllDayEvent, false);
+      console.log("終日解除成功");
+    }
 
-      const start = new Date();
-      start.setHours(startHour, 0, 0, 0);
-      const end = new Date();
-      end.setHours(endHour, endMinute, 0, 0);
+    const start = new Date();
+    start.setHours(startHour, 0, 0, 0);
+    const end = new Date();
+    end.setHours(endHour, endMinute, 0, 0);
 
-      item.start.setAsync(start, (startResult) => {
-        if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
-          console.error("開始時刻設定エラー:", startResult.error.message);
-          showMessage("開始時刻の設定に失敗しました", true);
-          return;
-        }
+    await setAsyncWrapper(item.start, start);
+    await setAsyncWrapper(item.end, end);
 
-        item.end.setAsync(end, (endResult) => {
-          if (endResult.status !== Office.AsyncResultStatus.Succeeded) {
-            console.error("終了時刻設定エラー:", endResult.error.message);
-            showMessage("終了時刻の設定に失敗しました", true);
-          } else {
-            console.log(`${subjectText}の時間が設定されました`);
-            showMessage(`${subjectText}として設定されました`);
-          }
-        });
-      });
-    });
-  });
+    console.log(`${subjectText}の時間が設定されました`);
+    showMessage(`${subjectText}として設定されました`);
+  } catch (error) {
+    console.error(`${subjectText}設定エラー:`, error);
+    showMessage(`${subjectText}設定に失敗しました`, true);
+  }
 }
 
 Office.onReady(() => {
