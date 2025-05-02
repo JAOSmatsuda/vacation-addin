@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 10:07";
+const scriptVersion = "2025/05/02 10:14";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -107,7 +107,7 @@ function setAllDayVacation() {
   }
 }
 
-function setHalfDay(startHour, endHour, subjectText) {
+function setHalfDay(startHour, endHour, endMinute, subjectText) {
   const item = Office.context.mailbox.item;
   console.log(`${subjectText}設定開始`);
 
@@ -121,6 +121,7 @@ function setHalfDay(startHour, endHour, subjectText) {
     console.log("件名が設定されました");
   });
 
+  // 終日を解除
   if (item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
     item.isAllDayEvent.setAsync(false, (result) => {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
@@ -134,7 +135,7 @@ function setHalfDay(startHour, endHour, subjectText) {
   const start = new Date();
   start.setHours(startHour, 0, 0, 0);
   const end = new Date();
-  end.setHours(endHour, 0, 0, 0);
+  end.setHours(endHour, endMinute, 0, 0);
 
   item.start.setAsync(start, (startResult) => {
     if (startResult.status !== Office.AsyncResultStatus.Succeeded) {
