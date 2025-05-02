@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 10:14";
+const scriptVersion = "2025/05/02 10:23";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -160,6 +160,6 @@ Office.onReady(() => {
   updateVersionDisplay();
 
   document.getElementById("allDayButton").onclick = setAllDayVacation;
-  document.getElementById("amHalfDayButton").onclick = () => setHalfDay(9, 14, "AM半休");
+  document.getElementById("amHalfDayButton").onclick = () => setHalfDay(9, 14, 0, "AM半休");
   document.getElementById("pmHalfDayButton").onclick = () => setHalfDay(14, 18, 15, "PM半休");
 });
