@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 11:39";
+const scriptVersion = "2025/05/02 11:46";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -48,11 +48,16 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
-  // 公開方法を「外出中」に設定
+  // 公開方法を「外出中」に設定（列挙型を使用）
   if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
-    item.busyStatus.setAsync("oof", (result) => {
+    const status = Office.MailboxEnums && Office.MailboxEnums.BusyStatus
+      ? Office.MailboxEnums.BusyStatus.OOF
+      : "oof";
+
+    item.busyStatus.setAsync(status, (result) => {
       if (result.status !== Office.AsyncResultStatus.Succeeded) {
         console.error("公開方法の設定に失敗:", result.error.message);
+        showMessage("公開方法の設定に失敗しました", true);
       } else {
         console.log("公開方法が不在に設定されました");
       }
@@ -98,9 +103,14 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
   });
 
   if (item.busyStatus && typeof item.busyStatus.setAsync === "function") {
-    item.busyStatus.setAsync("oof", (result) => {
+    const status = Office.MailboxEnums && Office.MailboxEnums.BusyStatus
+      ? Office.MailboxEnums.BusyStatus.OOF
+      : "oof";
+
+    item.busyStatus.setAsync(status, (result) => {
       if (result.status !== Office.AsyncResultStatus.Succeeded) {
         console.error("公開方法の設定に失敗:", result.error.message);
+        showMessage("公開方法の設定に失敗しました", true);
       } else {
         console.log("公開方法が不在に設定されました");
       }
