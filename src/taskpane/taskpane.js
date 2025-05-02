@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 10:23";
+const scriptVersion = "2025/05/02 10:29";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -60,6 +60,14 @@ function setAllDayVacation() {
     console.log("件名が設定されました");
   });
 
+  item.busyStatus.setAsync(Office.MailboxEnums.BusyStatus.OOF, (result) => {
+    if (result.status !== Office.AsyncResultStatus.Succeeded) {
+      console.error("公開方法の設定に失敗:", result.error.message);
+    } else {
+      console.log("公開方法が不在に設定されました");
+    }
+  });
+
   if (isClassic && item.isAllDayEvent && typeof item.isAllDayEvent.setAsync === "function") {
     // Classic Outlook: 終日を有効化
     item.isAllDayEvent.setAsync(true, (result) => {
@@ -119,6 +127,14 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
 
   item.subject.setAsync(subjectText, () => {
     console.log("件名が設定されました");
+  });
+
+  item.busyStatus.setAsync(Office.MailboxEnums.BusyStatus.OOF, (result) => {
+    if (result.status !== Office.AsyncResultStatus.Succeeded) {
+      console.error("公開方法の設定に失敗:", result.error.message);
+    } else {
+      console.log("公開方法が不在に設定されました");
+    }
   });
 
   // 終日を解除
