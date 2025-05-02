@@ -79,6 +79,7 @@
         border: 1px solid #ccc;
         border-radius: 8px;
       }
+
     </style>
   </head>
 
@@ -101,16 +102,15 @@
           <!-- Classic Outlook -->
           <div>
             <p><strong>Outlook Classic</strong></p>
-            <div style="position: relative; display: inline-block;">
+            <div style="position: relative; display: inline-block; transform: scale(0.5); transform-origin: top left;">
               <img id="classic-static" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic_1frame.png" 
                    alt="Classic Preview" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
               <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/play_button.svg" 
                    alt="Play" onclick="playGif('classic')" 
-                   style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; cursor: pointer;">
+                   style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(2); width: 40px; height: 40px; cursor: pointer;">
               <img id="classic-gif" src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" 
                    style="display: none; max-width: 100%; border: 1px solid #ccc; border-radius: 8px;" class="oof-media">
-            </div>
-          </div>
+            </div>            
       
           <!-- New Outlook -->
           <div>
