@@ -24,18 +24,18 @@
         width: 100%;
       }
 
-      #title {
-        font-size: 1.1em;
-        font-weight: bold;
-        text-align: center;
+      #version {
+        font-size: 0.9em;
         margin: 0;
         padding: 0;
+        text-align: left;
       }
 
-      #version {
-        margin: 0;
-        text-align: center;
-        font-size: 0.9em;
+      #instruction {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 5px;
       }
 
       #message {
@@ -49,14 +49,14 @@
 
   <body class="ms-font-m ms-welcome ms-Fabric">
     <div id="app-body">
-      <div id="title">休暇予定入力</div>
       <p id="version"></p>
+
+      <div id="instruction">取得する休暇の種類を選択してください</div>
 
       <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</button>
       <button id="amHalfDayButton" class="ms-Button ms-Button--primary">AM半休</button>
       <button id="pmHalfDayButton" class="ms-Button ms-Button--primary">PM半休</button>
 
-      <!-- ユーザー向け通知用 -->
       <div id="message"></div>
 
       <div id="oof-guide" style="text-align: center; margin-top: 20px;">

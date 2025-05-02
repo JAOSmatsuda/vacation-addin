@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 14:44";
+const scriptVersion = "2025/05/02 14:52";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
