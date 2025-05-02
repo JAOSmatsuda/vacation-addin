@@ -1,4 +1,11 @@
-console.log("taskpane.js ロード: 2025/05/02 09:37");
+const scriptVersion = "2025/05/02 10:00";
+
+function updateVersionDisplay() {
+  const versionElement = document.getElementById("version");
+  if (versionElement) {
+    versionElement.textContent = `Version: ${scriptVersion}`;
+  }
+}
 
 function showMessage(message, isError = false) {
   const messageDiv = document.getElementById("message");
@@ -149,7 +156,9 @@ function setHalfDay(startHour, endHour, subjectText) {
 }
 
 Office.onReady(() => {
+  updateVersionDisplay();
+  
   document.getElementById("allDayButton").onclick = setAllDayVacation;
-  document.getElementById("amHalfDayButton").onclick = () => setHalfDay(9, 13, "AM半休");
-  document.getElementById("pmHalfDayButton").onclick = () => setHalfDay(13, 17, "PM半休");
+  document.getElementById("amHalfDayButton").onclick = () => setHalfDay(9, 14, "AM半休");
+  document.getElementById("pmHalfDayButton").onclick = () => setHalfDay(14, 18.25, "PM半休");
 });
