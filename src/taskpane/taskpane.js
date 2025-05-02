@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 17:36";
+const scriptVersion = "2025/05/02 17:47";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -29,19 +29,17 @@ const OfficeBusyStatus = {
   NoData: 5
 };
 
-function flashWarning() {
-  const warning = document.getElementById("manual-warning");
-  if (!warning) return;
+function fallbackAllDaySet(item) {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 1);
 
-  let flashes = 0;
-  const interval = setInterval(() => {
-    warning.style.color = (flashes % 2 === 0) ? "red" : "";
-    flashes++;
-    if (flashes >= 6) {
-      clearInterval(interval);
-      warning.style.color = "";
-    }
-  }, 167); // 約3倍速（1回0.167秒）
+  item.start.setAsync(start, () => {
+    item.end.setAsync(end, () => {
+      showMessage("終日に設定されました");
+    });
+  });
 }
 
 function setAllDayVacation() {
