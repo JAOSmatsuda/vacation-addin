@@ -1,4 +1,4 @@
-const scriptVersion = "2025/05/02 17:18";
+const scriptVersion = "2025/05/02 17:32";
 
 function updateVersionDisplay() {
   const versionElement = document.getElementById("version");
@@ -156,7 +156,18 @@ function setHalfDay(startHour, endHour, endMinute, subjectText) {
 Office.onReady(() => {
   updateVersionDisplay();
 
-  document.getElementById("allDayButton").onclick = setAllDayVacation;
-  document.getElementById("amHalfDayButton").onclick = () => setHalfDay(9, 14, 0, "AM半休");
-  document.getElementById("pmHalfDayButton").onclick = () => setHalfDay(14, 18, 15, "PM半休");
+  document.getElementById("allDayButton").onclick = () => {
+    setAllDayVacation();
+    flashWarning();
+  };
+
+  document.getElementById("amHalfDayButton").onclick = () => {
+    setHalfDay(9, 14, 0, "AM半休");
+    flashWarning();
+  };
+
+  document.getElementById("pmHalfDayButton").onclick = () => {
+    setHalfDay(14, 18, 15, "PM半休");
+    flashWarning();
+  };
 });

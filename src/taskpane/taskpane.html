@@ -81,6 +81,16 @@
         border-radius: 8px;
       }
 
+      @keyframes flashRed {
+        0% { color: red; }
+        50% { color: inherit; }
+        100% { color: red; }
+      }
+
+      .flash-red {
+        animation: flashRed 0.5s ease-in-out;
+      }
+
     </style>
   </head>
 
@@ -97,7 +107,8 @@
       <div id="message"></div>
 
       <div id="oof-guide" style="text-align: center; margin-top: 20px;">
-        <p style="font-weight: bold;">手動で公開方法を変更してください</p>
+        <p id="oof-warning" style="font-weight: bold;">手動で公開方法を変更してください</p>
+        <p>変更方法は以下参照</p>
         <div style="display: flex; justify-content: center; gap: 20px;">
           
           <!-- Classic Outlook -->
@@ -141,6 +152,14 @@
           document.querySelector('#new-static + img').style.display = 'none'; // play button
           document.getElementById('new-gif').style.display = 'inline-block';
         }
+      }
+
+      function flashWarning() {
+        const warning = document.getElementById('oof-warning');
+        warning.classList.add('flash-red');
+        setTimeout(() => {
+          warning.classList.remove('flash-red');
+        }, 500);
       }
     </script>
 
