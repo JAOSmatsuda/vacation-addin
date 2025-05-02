@@ -10,7 +10,7 @@
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
     <style>
       body {
-        padding: 20px;
+        padding: 12px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       }
 
@@ -20,22 +20,22 @@
         gap: 10px;
       }
 
-      .ms-Button {
-        width: 100%;
-      }
-
       #version {
-        font-size: 0.9em;
-        margin: 0;
-        padding: 0;
+        font-size: 12px;
+        margin-bottom: 4px;
+        margin-top: 0;
         text-align: left;
       }
 
       #instruction {
-        font-size: 1.1em;
+        font-size: 14px;
         font-weight: bold;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        text-align: left;
+        margin-bottom: 4px;
+      }
+
+      .ms-Button {
+        width: 100%;
       }
 
       #message {
@@ -44,14 +44,42 @@
         font-weight: bold;
         text-align: center;
       }
+
+      #oof-guide {
+        margin-top: 16px;
+      }
+
+      .gif-pair {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .gif-box {
+        flex: 1 1 45%;
+        text-align: center;
+      }
+
+      .gif-box p {
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+
+      .gif-box img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
     </style>
   </head>
 
   <body class="ms-font-m ms-welcome ms-Fabric">
     <div id="app-body">
-      <p id="version"></p>
+      <p id="version">v1.0.0</p>
 
-      <div id="instruction">取得する休暇の種類を選択してください</div>
+      <p id="instruction">取得する休暇の種類を選択してください</p>
 
       <button id="allDayButton" class="ms-Button ms-Button--primary">終日休暇</button>
       <button id="amHalfDayButton" class="ms-Button ms-Button--primary">AM半休</button>
@@ -59,13 +87,17 @@
 
       <div id="message"></div>
 
-      <div id="oof-guide" style="text-align: center; margin-top: 20px;">
-        <p style="font-weight: bold;">
-          Outlook (new) の場合は、<br>公開方法を手動で「不在」にしてください。
-        </p>
-        <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" 
-             alt="外出中の設定方法" 
-             style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 8px;">
+      <div id="oof-guide">
+        <div class="gif-pair">
+          <div class="gif-box">
+            <p>New Outlookでの操作方法</p>
+            <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF.gif" alt="New Outlook操作方法">
+          </div>
+          <div class="gif-box">
+            <p>Classic Outlookでの操作方法</p>
+            <img src="https://raw.githubusercontent.com/JAOSmatsuda/vacation-addin/main/assets/OOF_classic.gif" alt="Classic Outlook操作方法">
+          </div>
+        </div>
       </div>
     </div>
 
